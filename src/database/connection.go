@@ -42,6 +42,14 @@ func Connect() (*sql.DB, error) {
 	return db, nil
 }
 
+func FindUserByEmail(email string) (*models.User, error) {
+	query := "select id, name, email, password from User where email = (?) limit 1"
+	row := Db.QueryRow(query, email)
+	user := new(models.User)
+	err := row.Scan(&user.Id, &user.Name, &user.Email, &user.Password)
+	return user, err
+}
+
 func InserUserTable(user *models.User) error {
 	query := "insert into User (name, email, password) values (?, ?, ?)"
 
