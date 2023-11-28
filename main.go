@@ -1,11 +1,21 @@
 package main
 
+/// GO MODULES SUCKS!!!!!
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/luizpbraga/auth-cookie/src/database"
 	"github.com/luizpbraga/auth-cookie/src/routes"
 )
 
 func main() {
+
+	db, err := database.Connect()
+
+	if err != nil {
+		return
+	}
+
+	defer db.Close()
 
 	app := gin.Default()
 

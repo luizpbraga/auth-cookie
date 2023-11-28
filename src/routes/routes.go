@@ -7,4 +7,5 @@ import (
 
 func Setup(r *gin.Engine) {
 	r.GET("/ping", controller.Pong)
+	r.POST("/api/register", controller.Register)
 }
