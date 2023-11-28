@@ -9,4 +9,6 @@ func Setup(r *gin.Engine) {
 	r.GET("/ping", controller.Pong)
 	r.POST("/api/register", controller.Register)
 	r.POST("/api/login", controller.Login)
+	r.GET("/api/getuser", controller.GetUser)
+	r.GET("/api/logout", controller.Logout)
 }

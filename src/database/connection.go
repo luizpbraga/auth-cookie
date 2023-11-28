@@ -50,11 +50,17 @@ func FindUserByEmail(email string) (*models.User, error) {
 	return user, err
 }
 
+func FindUserById(id string) (*models.User, error) {
+	query := "select id, name, email, password from User where id = (?) limit 1"
+	row := Db.QueryRow(query, id)
+	user := new(models.User)
+	err := row.Scan(&user.Id, &user.Name, &user.Email, &user.Password)
+	return user, err
+}
+
 func InserUserTable(user *models.User) error {
 	query := "insert into User (name, email, password) values (?, ?, ?)"
-
 	_, err := Db.Exec(query, user.Name, user.Email, user.Password)
-
 	return err
 }
 
@@ -68,8 +74,6 @@ create table if not exists User(
   primary key (id)
 );
   `
-
 	_, err := db.Exec(query)
-
 	return err
 }
