@@ -2,22 +2,39 @@ package database
 
 import (
 	"database/sql"
+	"fmt"
 	"log"
+	"os"
 
 	"github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 	"github.com/luizpbraga/auth-cookie/src/database/models"
 )
 
 var Db *sql.DB
 
 func Connect() (*sql.DB, error) {
+	err := godotenv.Load("./.env")
+
+	if err != nil {
+		log.Fatal("load end error: ", err)
+		return nil, err
+	}
+
+	user := os.Getenv("DBUSER")
+	dbName := os.Getenv("DBNAME")
+	address := os.Getenv("DBADDRESS")
+	password := os.Getenv("DBPASSWORD")
+
+	fmt.Print(user+dbName+address+password, "\n")
+
 	cfg := mysql.Config{
-		Net:                  "tcp",
-		User:                 "test",
-		Addr:                 "localhost",
-		Passwd:               "test",
-		DBName:               "Auth",
 		AllowNativePasswords: true,
+		Net:                  "tcp",
+		User:                 user,
+		Addr:                 address,
+		Passwd:               password,
+		DBName:               dbName,
 	}
 
 	db, err := sql.Open("mysql", cfg.FormatDSN())
